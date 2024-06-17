@@ -5,16 +5,14 @@
     "require": {
         "slim/slim": "4.*",
         "slim/psr7": "^1.7",
-        "jimtools/jwt-auth": "^1.0",
-        "vlucas/phpdotenv": "^5.6",
-        "php-di/slim-bridge": "^3.4"
+        "jimtools/jwt-auth": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.2"
     },
     "autoload": {
         "psr-4": {
-            "Src\\": "src",
+            "Src\\": "site",
             "Model\\": "model",
             "Service\\": "service",
             "Config\\": "config"

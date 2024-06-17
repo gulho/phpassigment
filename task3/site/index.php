@@ -11,7 +11,6 @@ use Service\UserService;
 use Slim\Factory\AppFactory;
 use Firebase\JWT\JWT;
 use Tuupola\Middleware\JwtAuthentication;
-use DI\Container;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -19,12 +18,9 @@ if (!file_exists(Config::$dbFile)) {
     require_once 'config/initdb.php';
 }
 
-$container = new Container();
-AppFactory::setContainer($container);
 $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
 
-//$app->add(new Tuupola\Middleware\JwtAuthentication([
 $app->add(new JwtAuthentication([
     "path" => ["/getusers"],
     "ignore" => ["'/login", "/test"],
@@ -64,18 +60,6 @@ $app->post('/addonemore', function (Request $request, Response $response, $args)
     } else {
         return $response->withStatus(401);
     }
-});
-
-$app->get('/test', function (Request $request, Response $response, $args) {
-    $response->getBody()->write('Test work');
-    return $response;
-});
-
-$app->get("/getusers", function (Request $request, Response $response, $args) use ($userService) {
-    $ret = $userService->getUsers();
-    var_dump($ret);
-    $response->getBody()->write("123456");
-    return $response;
 });
 
 $app->run();

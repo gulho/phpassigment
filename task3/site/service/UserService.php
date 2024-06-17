@@ -14,7 +14,7 @@ class UserService
         $this->db = new \PDO("sqlite:" . Config::$dbFile);
     }
 
-    public function registerUser(UserModel $user): UserModel|bool
+    final public function registerUser(UserModel $user): UserModel|bool
     {
         $smtp = $this->db->prepare("INSERT INTO user (username, password) VALUES (:username, :password)");
         $smtp->bindValue(':username', $user->getUsername());
@@ -26,7 +26,7 @@ class UserService
         }
     }
 
-    public function getUser(string $username): UserModel|bool
+    final public function getUser(string $username): UserModel|bool
     {
         $smtp = $this->db->prepare('SELECT * FROM user WHERE username = :username');
         $smtp->execute(['username' => $username]);
@@ -38,7 +38,7 @@ class UserService
         }
     }
 
-    public final function addOneMore(UserModel $user): bool
+    final public function addOneMore(UserModel $user): bool
     {
         $smtp = $this->db->prepare('UPDATE user SET count = count +1 WHERE username = :username');
         if ($smtp->execute(['username' => $user->getUsername()])) {
@@ -46,16 +46,5 @@ class UserService
         }
         return false;
     }
-
-    public function getUsers()
-    {
-        $ret = $this->db->query("SELECT * FROM user");
-        $result = [];
-        foreach ($ret as $arr) {
-            $result [] = new UserModel($arr['username'], $arr['password'], $arr['count']);
-        }
-        return $result;
-    }
-
 
 }
