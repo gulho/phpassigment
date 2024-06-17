@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./site/public:/var/www/html
+    depends_on:
+      - php
+
+  php:
+    build:
+      dockerfile: Dockerfile
+#    image: php:8.3-fpm
+    container_name: php
+    volumes:
+      - ./site:/var/www/html
+      - ./conf/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./conf/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+    expose:
+      - 9000
+
+volumes:
+  site:

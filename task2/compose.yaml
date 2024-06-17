@@ -1,0 +1,15 @@
+services:
+  db:
+    image: mariadb
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: test1234
+      MARIADB_DATABASE: task2
+    volumes:
+      - ./dbinit/createdb.sql:/docker-entrypoint-initdb.d/init.sql
+#      - ./resources/docker-sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
